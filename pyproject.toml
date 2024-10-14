@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "pr_flow"
+version = "0.1.0"
+description = "pr-flow using crewAI"
+authors = ["Your Name <you@example.com>"]
+
+[tool.poetry.dependencies]
+python = ">=3.10,<=3.13"
+crewai = "^0.70.1"
+asyncio = "*"
+pygithub = "^2.4.0"
+
+[tool.poetry.scripts]
+pr_flow = "pr_flow.main:main"
+run_flow = "pr_flow.main:main"
+plot_flow = "pr_flow.main:plot"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
