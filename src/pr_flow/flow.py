@@ -9,7 +9,7 @@ import time
 class PRFlow(Flow[AgentState]):
     @start()
     def fetch_pr(self):
-        repo = self.state.github.get_repo(f"{self.state.owner}/{self.state.repo}")  
+        repo = self.state.github.get_repo(f"{self.state.repo}")  
         pr = repo.get_pull(self.state.pr_number)
 
         self.state.pr_title = pr.title
@@ -19,7 +19,7 @@ class PRFlow(Flow[AgentState]):
 
     @listen(fetch_pr)
     def fetch_commits(self):
-        repo = self.state.github.get_repo(f"{self.state.owner}/{self.state.repo}")  
+        repo = self.state.github.get_repo(f"{self.state.repo}")  
         pr = repo.get_pull(self.state.pr_number)
 
         commits = pr.get_commits()
@@ -36,7 +36,7 @@ class PRFlow(Flow[AgentState]):
         self.state.script_files = []
         self.state.other_files = []
 
-        repo = self.state.github.get_repo(f"{self.state.owner}/{self.state.repo}")  
+        repo = self.state.github.get_repo(f"{self.state.repo}")  
         pr = repo.get_pull(self.state.pr_number)
 
         pr_files = list(pr.get_files())
