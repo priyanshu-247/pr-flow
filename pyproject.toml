@@ -6,7 +6,7 @@ authors = ["Your Name <you@example.com>"]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<=3.13"
-crewai = "^0.70.1"
+crewai = { extras = ["tools"], version = ">=0.67.1,<1.0.0" }
 asyncio = "*"
 pygithub = "^2.4.0"
 
