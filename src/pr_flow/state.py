@@ -22,10 +22,10 @@ class FileTypes(BaseModel):
 # Define a Pydantic model for AgentState
 class AgentState(BaseModel):
     steps: int = 0  # Provide a default value if it can start from 0
-    github: Github = Field(default_factory=lambda: Github(os.environ['GITHUB_TOKEN']))  # Use a default factory
-    owner: str = os.environ['GITHUB_REPOSITORY_OWNER']
-    repo: str = os.environ['GITHUB_REPOSITORY_NAME']
-    pr_number: int = int(os.environ['GITHUB_PR_NUMBER'])
+    github: Github = Field(default_factory=lambda: Github(os.environ['PAT_TOKEN']))  # Use a default factory
+    owner: str = os.environ['REPOSITORY_OWNER']
+    repo: str = os.environ['REPOSITORY_NAME']
+    pr_number: int = int(os.environ['PR_NUMBER'])
     pr_title: Optional[str] = None
     pr_branch: Optional[str] = None
     commit_messages: List[str] = Field(default_factory=list)
