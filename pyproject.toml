@@ -1,3 +1,9 @@
+[project]
+name = "pr_flow"
+version = "0.1.0"
+description = "pr-flow using crewAI"
+authors = ["Your Name <you@example.com>"]
+
 [tool.poetry]
 name = "pr_flow"
 version = "0.1.0"
