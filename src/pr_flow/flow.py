@@ -1,5 +1,5 @@
 
-from crewai.flow.flow import Flow, and_, listen, start
+from crewai.flow.flow import Flow, listen, start, or_
 from .crews.code_crew import CodeCrew
 from .crews.doc_crew import DocCrew
 from .state import AgentState
@@ -112,7 +112,7 @@ class PRFlow(Flow[AgentState]):
         print(self.state.doc_files[0])
         self.state.steps = 5
 
-    @listen(and_(code_review_crew, doc_review_crew))
+    @listen(or_(code_review_crew, doc_review_crew))
     def summary_crew(self):
         print('sum-executed')
         self.state.state = "SUMMARY_DONE"
@@ -133,8 +133,3 @@ async def plot_flow():
     """
     pr_flow = PRFlow()
     pr_flow.plot()
-
-
-
-
-

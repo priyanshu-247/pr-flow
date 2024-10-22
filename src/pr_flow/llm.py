@@ -13,4 +13,5 @@ Groq = LLM(
     max_tokens=1024,
     top_p=1,
     temperature=1,
+    api_key=os.environ['CREWAI_API_KEY'],
     )
