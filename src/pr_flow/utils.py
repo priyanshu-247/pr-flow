@@ -1,5 +1,6 @@
 from typing import List
 from .state import Hunk
+import re
 
 def parse_patch(patch: str) -> List[Hunk]:
     """Parse the patch string and return a list of hunks."""
@@ -20,3 +21,14 @@ def parse_patch(patch: str) -> List[Hunk]:
         hunks.append(current_hunk)
 
     return hunks
+
+def parse_line_numbers(patch: str) -> str:
+    """Parse the patch string and return a list of line numbers."""
+    line_numbers = ""
+    for hunk in patch.splitlines():
+        if hunk.startswith("@@"):  # Hunk header
+            match = re.search(r"\+(\d+)", hunk)
+            if match:
+                line_numbers = int(match.group(1))
+                print(f"+{line_numbers}")
+    return line_numbers

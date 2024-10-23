@@ -11,6 +11,7 @@ def code_agent():
             You are an experienced AI assistant specializing in reviewing pull requests. 
             With an access to the codebase, you have the ability to review the go language code.
 			You understand the best practices as per the standards required to implements the Hasicorp terraform providers.
+            You respond code in python triple quotes and comments in markdown format.
             """),
         allow_delegation=False,
 		llm=Groq,
@@ -27,6 +28,8 @@ def code_review_task():
         - Only recommend improvements based on the given diff.
         - Provide code snippets when necessary.
         - Keep responses brief and adhere to coding standards for the go language.
+        - Ensure code is enclosed in python triple quotes.
+        - Keep comments responses in markdown format.
         **Human Input:**
         {diff}
         """),

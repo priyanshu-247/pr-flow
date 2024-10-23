@@ -3,8 +3,9 @@ from crewai.flow.flow import Flow, listen, start, or_
 from .crews.code_crew import CodeCrew
 from .crews.doc_crew import DocCrew
 from .state import AgentState
-from .utils import parse_patch
+from .utils import parse_patch, parse_line_numbers
 import time
+count = 0
 
 class PRFlow(Flow[AgentState]):
     @start()
@@ -115,10 +116,42 @@ class PRFlow(Flow[AgentState]):
     @listen(or_(code_review_crew, doc_review_crew))
     def summary_crew(self):
         print('sum-executed')
+        global count
+        count += 1
+        if count == 2:
+            if len(self.state.code_files) > 0:
+                for file in self.state.code_files:
+                    filename = file['filename']
+                    reviw = file['review']
+                    ln_numbr = parse_line_numbers(file['patch'])
+                    self.git_comment(filename, reviw, ln_numbr)
+
+            if len(self.state.doc_files) > 0:
+                for doc_file in self.state.doc_files:
+                    filename = doc_file['filename']
+                    reviw = doc_file['review']
+                    ln_numbr = parse_line_numbers(doc_file['patch'])
+                    self.git_comment(filename, reviw, ln_numbr)
+        print(f"Documeent review: {self.state.doc_files[0]}")
         self.state.state = "SUMMARY_DONE"
         self.state.steps = 6
 
+    def git_comment(self, filename, reviw, ln_numbr):
+        repo = self.state.github.get_repo(f"{self.state.repo}")
+        pr = repo.get_pull(self.state.pr_number)
 
+        # Step 3: Get the latest commit
+        commit_id = pr.head.sha  # Get the latest commit SHA
+        commit = repo.get_commit(commit_id)
+        print(f"Type of the ln_numbr: {type(ln_numbr)} and ln_numbr: {ln_numbr}")
+
+        # Step 4: Comment on the first line of the diff
+        pr.create_review_comment(
+            body=reviw,
+            commit=commit,
+            path=filename,  # The file path in the pull request
+            line=ln_numbr  # The first line of the diff
+        )
 
 async def run_flow():
     """
